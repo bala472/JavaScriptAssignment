@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+        }
+        #profile {
+            width: 300px;
+            background-color: white;
+            display: block;
+            padding: 10px;
+            border-radius: 16px; /* More pronounced rounded corners */
+            box-shadow: 0 0 15px rgba(12, 12, 12, 0.1);
+            border: 1px solid lightcoral;
+            text-align: center; /* Center align the form content */
+            height: fit-content;
+        }
+        #image-container {
+            position: relative;
+            margin-bottom: 5px;
+        }
+        #profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            cursor: pointer;
+            background-color: white; /* White background */
+            border: 1px solid lightcoral; /* Light coral border */
+        }
+        #profile input {
+            display: block;
+            margin-bottom: 10px;
+            padding: 12px; /* Increased padding for larger input fields */
+            width: 100%; /* Adjusted to fit within the form padding */
+            height: 40px; /* Increased height for input fields */
+            box-sizing: border-box;
+            border: 1px solid lightcoral;
+            border-radius: 8px; /* Rounded corners for input fields */
+            font-size: 16px; /* Larger font size */
+        }
+        #submit {
+            background-color: lightcoral;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <form id="profile">
+        <div id="image-container">
+            <img src="coral.png" alt="Profile Picture" id="profile-image">
+        </div>
+        <input type="text" name="name" id="name" placeholder="Name">
+        <input type="text" name="email" id="email" placeholder="Email">
+        <input type="text" name="phone" id="phone" placeholder="Phone Number">
+        <input type="text" name="role" id="role" placeholder="Job Role">
+        <input type="text" name="yoe" id="yoe" placeholder="Years Of Experience">
+        <input type="submit" name="submit" id="submit" value="Submit">
+    </form>
+    <script>
+        // Create a hidden file input dynamically
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/*';
+        fileInput.style.display = 'none';
+        document.body.appendChild(fileInput);
+
+        document.getElementById('profile-image').addEventListener('click', function() {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profile-image').src = e.target.result;
+                    localStorage.setItem('profileImage', e.target.result);
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById('profile').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const role = document.getElementById('role').value;
+            const yoe = document.getElementById('yoe').value;
+
+            localStorage.setItem('name', name);
+            localStorage.setItem('email', email);
+            localStorage.setItem('phone', phone);
+            localStorage.setItem('role', role);
+            localStorage.setItem('yoe', yoe);
+
+            alert('Profile saved!');
+        });
+
+        window.addEventListener('load', function() {
+            if (localStorage.getItem('profileImage')) {
+                document.getElementById('profile-image').src = localStorage.getItem('profileImage');
+            }
+            if (localStorage.getItem('name')) {
+                document.getElementById('name').value = localStorage.getItem('name');
+            }
+            if (localStorage.getItem('email')) {
+                document.getElementById('email').value = localStorage.getItem('email');
+            }
+            if (localStorage.getItem('phone')) {
+                document.getElementById('phone').value = localStorage.getItem('phone');
+            }
+            if (localStorage.getItem('role')) {
+                document.getElementById('role').value = localStorage.getItem('role');
+            }
+            if (localStorage.getItem('yoe')) {
+                document.getElementById('yoe').value = localStorage.getItem('yoe');
+            }
+        });
+    </script>
+</body>
+</html>
